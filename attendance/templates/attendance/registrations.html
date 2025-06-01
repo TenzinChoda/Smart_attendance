@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-center">Registered Students</h3>
+                </div>
+                <div class="card-body">
+                    {% if registrations %}
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Roll Number</th>
+                                        <th>Registration Date</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for registration in registrations %}
+                                        <tr>
+                                            <td>{{ registration.Name }}</td>
+                                            <td>{{ registration.Roll_Number }}</td>
+                                            <td>{{ registration.Registration_Date }}</td>
+                                            <td>
+                                                <button class="btn btn-danger btn-sm delete-btn" 
+                                                        data-name="{{ registration.Name }}">
+                                                    Delete
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-center text-muted">No registered students found.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const deleteButtons = document.querySelectorAll('.delete-btn');
+    
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            if (confirm('Are you sure you want to delete this student? This will remove all their data including captured images.')) {
+                const name = this.dataset.name;
+                
+                fetch('/delete_registration/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: `name=${encodeURIComponent(name)}`
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        // Remove the row from the table
+                        this.closest('tr').remove();
+                        
+                        // Check if there are any rows left
+                        const tbody = document.querySelector('tbody');
+                        if (!tbody.children.length) {
+                            location.reload(); // Reload to show "No records" message
+                        }
+                    } else {
+                        alert('Error deleting student: ' + (data.message || 'Unknown error'));
+                    }
+                })
+                .catch(error => {
+                    alert('Error deleting student: ' + error);
+                });
+            }
+        });
+    });
+});
+</script>
+{% endblock %} 

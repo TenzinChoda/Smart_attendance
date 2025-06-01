@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - Smart Attendance System{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="text-center">Welcome to Smart Attendance System</h2>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Register New Student</h5>
+                                <p class="card-text">Add a new student to the system with face recognition.</p>
+                                <a href="{% url 'register' %}" class="btn btn-primary">Register Student</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Take Attendance</h5>
+                                <p class="card-text">Mark attendance using face recognition.</p>
+                                <a href="{% url 'recognize' %}" class="btn btn-success">Take Attendance</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">View Attendance Logs</h5>
+                                <p class="card-text">Check attendance records of all students.</p>
+                                <a href="{% url 'attendance_logs' %}" class="btn btn-info">View Logs</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Manage Students</h5>
+                                <p class="card-text">View and manage registered students.</p>
+                                <a href="{% url 'registrations' %}" class="btn btn-warning">Manage Students</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
